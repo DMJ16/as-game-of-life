@@ -1,0 +1,28 @@
+{
+  "name": "as-game-of-life",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "node tests",
+    "asbuild:untouched": "asc assembly/index.as.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.as.ts --target release",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
+  },
+  "keywords": [
+    "assemblyscript",
+    "conway's game of life",
+    "webassembly",
+    "react"
+  ],
+  "author": "david josephs",
+  "license": "ISC",
+  "dependencies": {
+    "@assemblyscript/loader": "^0.14.12",
+    "@types/node": "^14.11.2"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.14.12",
+    "ts-node": "^9.0.0"
+  }
+}
