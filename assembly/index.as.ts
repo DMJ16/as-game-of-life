@@ -1,77 +1,65 @@
-export declare const CELL_ALIVE: u32;
-export declare const CELL_DEAD: u32;
-export declare const BIT_ROT: u32;
-
-let width: i32;
-let height: i32;
-let offset: i32;
-
-function get(x: u32, y: u32): u32 {
-  return load<u32>((y * width + x) << 2);
+enum Cell {
+  DEAD = 0,
+  ALIVE = 1,
 }
+export class Universe {
+  width: u32 = 64;
+  height: u32 = 64;
+  cells: Uint32Array = new Uint32Array(this.width * this.height)
+    .map((num, i) => {
+      num = i;
+      return num;
+    })
+    .map((num) => {
+      if (num % 2 == 0 || num % 7 == 0) return Cell.ALIVE;
+      else return Cell.DEAD;
+    });
 
-function set(x: u32, y: u32, value: u32): void {
-  store<u32>((offset + y * width + x) << 2, value);
-}
-
-function rot(x: u32, y: u32, value: u32): void {
-  const alpha = max<i32>((value >> 24) - BIT_ROT, 0);
-  set(x, y, (alpha << 24) | (value & 0x00ffffff));
-}
-
-export function init(w: i32, h: i32): void {
-  width = w;
-  height = h;
-  offset = w * h;
-
-  for (let y = 0; y < h; ++y) {
-    for (let x = 0; x < w; ++x) {
-      const cell =
-        Math.random() > 0.1 ? CELL_DEAD & 0x00fffff : CELL_ALIVE | 0xff000000;
-      set(x, y, cell);
-    }
+  getIdx(row: u32, col: u32): u32 {
+    return row * this.width + col;
   }
-}
 
-export function step(): void {
-  let w = width;
-  let h = height;
-  let hm1 = h - 1;
-  let wm1 = w - 1;
-
-  for (let y = 0; y < h; ++y) {
-    const ym1 = y == 0 ? hm1 : y - 1;
-    const yp1 = y == hm1 ? 0 : y + 1;
-    for (let x = 0; x < w; ++x) {
-      const xm1 = x == 0 ? wm1 : x - 1;
-      const xp1 = x == wm1 ? 0 : x + 1;
-      const liveNeighbors =
-        (get(xm1, ym1) & 1) +
-        (get(x, ym1) & 1) +
-        (get(xp1, ym1) & 1) +
-        (get(xm1, y) & 1) +
-        (get(xp1, y) & 1) +
-        (get(xm1, yp1) & 1) +
-        (get(x, yp1) & 1) +
-        (get(xp1, yp1) & 1);
-
-      const self = get(x, y);
-      if (self & 1) {
-        if ((liveNeighbors & 0b1110) == 2) rot(x, y, self);
-        else set(x, y, CELL_DEAD | 0xff000000);
-      } else {
-        if (liveNeighbors == 3) set(x, y, CELL_ALIVE | 0xff000000);
-        else rot(x, y, self);
+  liveNeighborCount(row: u32, col: u32): u8 {
+    let count: u8 = 0;
+    const rowArr: u32[] = [this.height - 1, 0, 1];
+    const colArr: u32[] = [this.width - 1, 0, 1];
+    for (let i = 0; i < rowArr.length; i++) {
+      const deltaRow: u32 = rowArr[i];
+      for (let j = 0; j < colArr.length; j++) {
+        const deltaCol: u32 = colArr[j];
+        if (deltaRow == 0 && deltaCol == 0) continue;
+        const neighbor_row = (row + deltaRow) % this.height;
+        const neighbor_col = (col + deltaCol) % this.width;
+        const idx = this.getIdx(neighbor_row, neighbor_col);
+        count += this.cells[idx] as u8;
       }
     }
+    return count;
   }
-}
 
-export function fill(x: u32, y: u32, p: f64): void {
-  for (let i = 0; i < width; ++i) {
-    if (Math.random() < p) set(i, y, CELL_ALIVE | 0xff000000);
-  }
-  for (let j = 0; j < height; ++j) {
-    if (Math.random() < p) set(x, j, CELL_ALIVE | 0xff000000);
+  tick(): void {
+    for (let row: u32 = 0; row < this.height; row++) {
+      for (let col: u32 = 0; col < this.width; col++) {
+        const idx = this.getIdx(row, col);
+        const cell = this.cells[idx];
+        const liveNeighbors = this.liveNeighborCount(row, col);
+        let nextCell: u32;
+        if (cell == Cell.ALIVE && liveNeighbors < 2) {
+          nextCell = Cell.DEAD;
+        } else if (
+          cell == Cell.ALIVE &&
+          (liveNeighbors == 2 || liveNeighbors == 3)
+        ) {
+          nextCell = Cell.ALIVE;
+        } else if (cell == Cell.ALIVE && liveNeighbors > 3) {
+          nextCell = Cell.DEAD;
+        } else if (cell == Cell.DEAD && liveNeighbors == 3) {
+          nextCell = Cell.ALIVE;
+        } else {
+          nextCell = cell;
+        }
+        this.cells[idx] = nextCell;
+      }
+    }
   }
 }
