@@ -1,12 +1,12 @@
-# as-game-of-life 🚀 👾
+# 🚀 👾 ⚛️ as-game-of-life
 
-## Summary 📖
+## 📖 Summary
 
 AssemblyScript/React reworking of Conway's Game of Life.
 
-## Technology and Tools 🧰
+## 🧰 Technology and Tools
 
-AssemblyScript + React + as-bind + use-as-bind + Parcel
+AssemblyScript | React | as-bind | use-as-bind | Parcel
 
 ## Instructions
 
