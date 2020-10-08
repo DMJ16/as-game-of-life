@@ -1,5 +1,7 @@
 # 🚀 👾 ⚛️ as-game-of-life
 
+![CircleCI](https://img.shields.io/circleci/build/github/DMJ16/as-game-of-life?style=plastic)
+
 ## 📖 Summary
 
 AssemblyScript/React reworking of Conway's Game of Life.
