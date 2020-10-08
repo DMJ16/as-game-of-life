@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from "react";
 import * as fs from "fs";
+import React, { useEffect, useRef } from "react";
 import { useAsBind } from "use-as-bind/src";
+import ASModule from "../../../build/optimized";
 
 const wasm = fs.readFileSync("./build/optimized.wasm");
 
 export default function Game(): JSX.Element {
-  const { loaded, instance, error } = useAsBind(wasm);
+  const { loaded, instance, error } = useAsBind<typeof ASModule, Object>(wasm);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
