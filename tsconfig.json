@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2015",
     "module": "commonjs",
     "lib": ["ES2015", "dom", "ES2016", "ES2017"],
     "jsx": "react",
@@ -17,6 +17,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["web/src/**/*.tsx", "web/src/**/*.ts"],
+  "include": ["web/src"],
   "exclude": ["node_modules"]
 }

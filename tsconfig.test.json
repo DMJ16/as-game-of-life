@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // use of noImplicitAmy strictly as a hack to
+    // allow Jest to overlook as-bind and use-as-bind
+    "noImplicitAny": false
+  }
+}

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game component render test Game component consumes the wasm module and renders the game of life 1`] = `
+<div>
+  <canvas />
+</div>
+`;

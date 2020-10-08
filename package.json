@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "AssemblyScript/React reworking of Conway's Game of Life.",
   "scripts": {
+    "test": "jest",
     "asbuild:untouched": "asc ./node_modules/as-bind/lib/assembly/as-bind.ts assembly/index.as.ts --target debug",
     "asbuild:optimized": "asc ./node_modules/as-bind/lib/assembly/as-bind.ts assembly/index.as.ts --target release",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
@@ -12,11 +13,14 @@
   "keywords": [
     "assemblyscript",
     "react",
+    "as-bind",
+    "use-as-bind",
     "conway's game of life",
     "webassembly"
   ],
   "author": "david josephs",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "@assemblyscript/loader": "^0.14.12",
     "@types/node": "^14.11.2",
@@ -26,10 +30,18 @@
     "use-as-bind": "^0.1.0"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.10.7",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^26.0.14",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "assemblyscript": "^0.14.12",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
+    "jest": "^26.4.2",
     "parcel": "^2.0.0-beta.1",
+    "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   }
